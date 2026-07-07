@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Clock</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Klee+One:wght@400;600&family=Nanum+Pen+Script&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Klee+One:wght@400;600&family=LXGW+WenKai+TC&family=Nanum+Pen+Script&display=swap');
 
         :root {
             --font-size: 25.2px;
@@ -200,7 +200,7 @@
             border-radius: 8px;
             box-shadow: 6px 6px 0px #d4d4d4;
             color: #e2e8f0;
-            font-family: 'Caveat', 'Klee One', 'Nanum Pen Script', 'Segoe UI', cursive, sans-serif;
+            font-family: 'Caveat', 'LXGW WenKai TC', 'Klee One', 'Nanum Pen Script', 'Segoe UI', cursive, sans-serif;
             padding: 16px;
             box-sizing: border-box;
             opacity: 0;
@@ -440,7 +440,7 @@
             top: 0;
             right: 0;
             width: 360px;
-            height: 100vh;
+            max-height: 100vh;
             background: rgba(30, 30, 30, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -614,12 +614,23 @@
             margin: 8px 0;
             max-height: 120px;
             overflow-y: auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 4px;
+            padding: 0;
+        }
+
+        .item-list:not(:empty) {
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 4px;
         }
 
-        .animated-background-light .item-list {
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .animated-background-light .item-list:not(:empty) {
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
@@ -749,22 +760,22 @@
         </div>
 
         <div class="drawer-divider">
-            <span>Anniversaries</span>
+            <span id="anniversary-section-title" class="section-title">Anniversaries</span>
             <ul id="drawer-anniversary-list" class="item-list"></ul>
             <div style="margin-top: 8px;">
                 <input type="text" id="add-anniversary-name" class="drawer-input">
                 <input type="date" id="add-anniversary-date" class="drawer-input">
-                <button onclick="addAnniversary()" class="drawer-btn">Add Anniversary</button>
+                <button id="btn-add-anniversary" onclick="addAnniversary()" class="drawer-btn">Add Anniversary</button>
             </div>
         </div>
 
         <div class="drawer-divider">
-            <span>Goals</span>
+            <span id="goal-section-title" class="section-title">Goals</span>
             <ul id="drawer-goal-list" class="item-list"></ul>
             <div style="margin-top: 8px;">
                 <input type="text" id="add-goal-name" class="drawer-input">
                 <input type="date" id="add-goal-date" class="drawer-input">
-                <button onclick="addGoal()" class="drawer-btn">Add Goal</button>
+                <button id="btn-add-goal" onclick="addGoal()" class="drawer-btn">Add Goal</button>
             </div>
         </div>
     </div>
@@ -821,12 +832,12 @@
             document.querySelectorAll('.toggle-label')[0].textContent = t.todoToggleLabel;
             document.querySelectorAll('.toggle-label')[1].textContent = t.anniversaryLabel;
             document.querySelectorAll('.toggle-label')[2].textContent = t.goalLabel;
-            document.querySelectorAll('.drawer-divider span')[1].textContent = t.anniversaryTitle;
-            document.querySelectorAll('.drawer-divider span')[2].textContent = t.goalTitle;
+            document.getElementById('anniversary-section-title').textContent = t.anniversaryTitle;
+            document.getElementById('goal-section-title').textContent = t.goalTitle;
             document.getElementById('add-anniversary-name').placeholder = `${t.nameLabel} (${t.anniversaryPlaceholder})`;
             document.getElementById('add-goal-name').placeholder = `${t.nameLabel} (${t.goalPlaceholder})`;
-            document.querySelectorAll('.drawer-divider .drawer-btn')[0].textContent = `${t.addButton} ${t.anniversaryLabel}`;
-            document.querySelectorAll('.drawer-divider .drawer-btn')[1].textContent = `${t.addButton} ${t.goalLabel}`;
+            document.getElementById('btn-add-anniversary').textContent = `${t.addButton} ${t.anniversaryLabel}`;
+            document.getElementById('btn-add-goal').textContent = `${t.addButton} ${t.goalLabel}`;
             document.getElementById('lang-select-label').textContent = t.langSettingLabel;
         }
 

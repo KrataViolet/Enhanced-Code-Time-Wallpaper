@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Clock</title>
+    <style>
+        :root {
+            --font-size: 25.2px;
+            --gap: 56px;
+            --clock-size: 140px;
+            --hand-width: 2.8px;
+            --switch-size: 84px;
+            --switch-height: 42px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: var(--font-size);
+            line-height: 1.5;
+            transition: background 0.5s, color 0.5s;
+            overflow: hidden;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            gap: var(--gap);
+        }
+
+        .code { color: #569cd6; }
+        .number { color: #dcdcaa; }
+        .string { color: #ce9178; }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animated-background-dark {
+            background: linear-gradient(135deg, #2c3e50, #34495e, #1e1e1e);
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
+        }
+
+        .animated-background-light {
+            background: linear-gradient(135deg, #f0f0f0, #d3d3d3, #ffffff);
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
+        }
+
+        .analog-clock {
+            width: var(--clock-size);
+            height: var(--clock-size);
+            border: var(--hand-width) solid;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(206, 145, 120, 0.8);
+            transition: box-shadow 0.5s;
+        }
+
+        .hand {
+            position: absolute;
+            background: currentColor;
+            transform-origin: bottom center;
+        }
+
+        .hour-hand { width: 5.6px; height: 42px; top: 28px; left: 67.2px; }
+        .minute-hand { width: 4.2px; height: 56px; top: 14px; left: 67.9px; }
+        .second-hand { width: 2.8px; height: 63px; top: 7px; left: 68.6px; background: #ce9178; }
+
+        .center-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            transition: background 0.5s;
+        }
+
+        .animated-background-light .center-dot {
+            background: #000;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Klee+One:wght@400;600&display=swap');
+
+        /* Top Bar & Controls styling */
+        .top-right-controls {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 150;
+        }
+
+        .theme-switch {
+            position: static !important;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .theme-switch label { font-size: var(--font-size); color: inherit; }
+        .theme-switch input[type="checkbox"] {
+            appearance: none;
+            width: var(--switch-size);
+            height: var(--switch-height);
+            background: #569cd6;
+            border-radius: 21px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .theme-switch input[type="checkbox"]::before {
+            content: '🌙';
+            position: absolute;
+            width: 38px;
+            height: 38px;
+            background: #1e1e1e;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s, content 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .theme-switch input[type="checkbox"]:checked::before {
+            content: '☀️';
+            transform: translateX(42px);
+            background: #f0f0f0;
+        }
+
+        .theme-switch input[type="checkbox"]:checked { background: #dcdcaa; }
+
+        .flat-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+        }
+
+        .flat-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Notepad styles */
+        #todo-notepad {
+            position: absolute;
+            top: 85px;
+            right: 140px;
+            width: 320px;
+            background: #252526;
+            border: 3px solid #d4d4d4;
+            border-radius: 8px;
+            box-shadow: 6px 6px 0px #d4d4d4;
+            color: #e2e8f0;
+            font-family: 'Caveat', 'Klee One', 'Courier New', cursive, monospace;
+            padding: 16px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.9) translateY(-20px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            z-index: 140;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 28px;
+            line-height: 28px;
+        }
+
+        #todo-notepad.open {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .notepad-header {
+            font-family: 'Caveat', 'Klee One', 'Courier New', cursive, monospace;
+            font-weight: bold;
+            font-size: 20px;
+            border-bottom: 2px solid #d4d4d4;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        #todo-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 8px;
+        }
+
+        /* Scrollbar styles for list and drawer */
+        #todo-list::-webkit-scrollbar,
+        .item-list::-webkit-scrollbar,
+        #settings-drawer::-webkit-scrollbar {
+            width: 6px;
+        }
+        #todo-list::-webkit-scrollbar-thumb,
+        .item-list::-webkit-scrollbar-thumb,
+        #settings-drawer::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        .animated-background-light #todo-list::-webkit-scrollbar-thumb,
+        .animated-background-light .item-list::-webkit-scrollbar-thumb,
+        .animated-background-light #settings-drawer::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 4px 0;
+            max-height: 40px;
+            opacity: 1;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out, padding 0.4s ease-out, margin 0.4s ease-out, transform 0.4s ease-out;
+        }
+
+        .todo-item.removing {
+            opacity: 0;
+            max-height: 0;
+            padding: 0;
+            margin: 0;
+            transform: translateX(30px);
+        }
+
+        .todo-checkbox {
+            border-radius: 50% 40% 45% 50% / 40% 45% 50% 55%;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d4d4d4;
+            margin-right: 10px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .todo-checkbox.checked {
+            background: #e53e3e;
+            border-color: #e53e3e;
+        }
+
+        .todo-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .todo-item-text {
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s;
+            font-size: 18px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        .todo-item-text.completed {
+            color: #718096;
+        }
+
+        .todo-item-text.completed::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 55%;
+            width: 100%;
+            height: 2px;
+            background: #e53e3e;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: strikethrough 0.4s forwards ease-in-out;
+        }
+
+        @keyframes strikethrough {
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        .todo-input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            border-top: 2px dashed rgba(255, 255, 255, 0.15);
+            padding-top: 10px;
+        }
+
+        #todo-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 18px;
+            outline: none;
+            border-bottom: 2px solid #d4d4d4;
+            color: #e2e8f0;
+            padding-bottom: 2px;
+        }
+
+        .todo-input-container button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #d4d4d4;
+            font-weight: bold;
+            padding: 0 0 0 10px;
+            outline: none;
+            line-height: 1;
+        }
+
+        /* Notepad Light Mode Overrides */
+        .animated-background-light #todo-notepad {
+            background: #fefcf0;
+            border: 3px solid #2d3748;
+            box-shadow: 6px 6px 0px #2d3748;
+            color: #2d3748;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        }
+
+        .animated-background-light .notepad-header {
+            border-bottom: 2px solid #2d3748;
+        }
+
+        .animated-background-light .todo-checkbox {
+            border-color: #2d3748;
+        }
+
+        .animated-background-light .todo-item-text.completed {
+            color: #a0aec0;
+        }
+
+        .animated-background-light .todo-input-container {
+            border-top-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .animated-background-light #todo-input {
+            border-bottom-color: #2d3748;
+            color: #2d3748;
+        }
+
+        .animated-background-light .todo-input-container button {
+            color: #2d3748;
+        }
+
+        /* Settings Gear Button */
+        .settings-btn {
+            position: absolute;
+            bottom: 28px;
+            right: 28px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #569cd6;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px rgba(86, 156, 214, 0.4);
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+            z-index: 100;
+            color: #1e1e1e;
+            outline: none;
+        }
+
+        .settings-btn svg {
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .settings-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 18px rgba(86, 156, 214, 0.6);
+        }
+
+        .settings-btn:hover svg {
+            transform: rotate(90deg);
+        }
+
+        .animated-background-light .settings-btn {
+            background: #dcdcaa;
+            box-shadow: 0 0 12px rgba(220, 220, 170, 0.4);
+        }
+
+        .animated-background-light .settings-btn:hover {
+            box-shadow: 0 0 18px rgba(220, 220, 170, 0.6);
+        }
+
+        /* Settings Slide Drawer */
+        #settings-drawer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 360px;
+            height: 100vh;
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 200;
+            padding: 24px;
+            box-sizing: border-box;
+            color: #d4d4d4;
+            font-family: Consolas, 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        #settings-drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 10px;
+        }
+
+        .drawer-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 15px;
+        }
+
+        /* Light mode drawer overrides */
+        .animated-background-light #settings-drawer {
+            background: rgba(243, 243, 243, 0.85);
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            color: #1e1e1e;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .animated-background-light .drawer-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .animated-background-light .drawer-divider {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Switch styling */
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4a5568;
+            transition: .3s;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #48bb78;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        .animated-background-light .slider {
+            background-color: #cbd5e0;
+        }
+
+        /* Inputs & Buttons in drawer */
+        .drawer-input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            background: #252526;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #e2e8f0;
+            font-family: inherit;
+            box-sizing: border-box;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .drawer-input:focus {
+            border-color: #569cd6;
+        }
+
+        .animated-background-light .drawer-input {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            color: #1e1e1e;
+        }
+
+        .animated-background-light .drawer-input:focus {
+            border-color: #dcdcaa;
+        }
+
+        .drawer-btn {
+            width: 100%;
+            padding: 8px;
+            background: #569cd6;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .drawer-btn:hover {
+            background: #4b8cc4;
+        }
+
+        .animated-background-light .drawer-btn {
+            background: #dcdcaa;
+            color: #1e1e1e;
+        }
+
+        .animated-background-light .drawer-btn:hover {
+            background: #cece9b;
+        }
+
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0;
+            max-height: 120px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        .animated-background-light .item-list {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+        }
+
+        .animated-background-light .item-row {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #e53e3e;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 4px;
+            outline: none;
+        }
+
+        .delete-btn:hover {
+            color: #fc8181;
+        }
+    </style>
+</head>
+<body class="animated-background-dark">
+    <!-- Top Controls (Note and Theme Toggle) -->
+    <div class="top-right-controls">
+        <button id="todo-toggle" class="flat-btn" onclick="toggleTodoNotepad()" title="Todo List / 待办事项">
+            <svg viewBox="0 0 64 64" width="42" height="42">
+                <rect x="8" y="10" width="48" height="48" rx="8" fill="#ffe066" stroke="#2d3748" stroke-width="4"/>
+                <circle cx="20" cy="10" r="4" fill="#a0aec0" stroke="#2d3748" stroke-width="3"/>
+                <circle cx="32" cy="10" r="4" fill="#a0aec0" stroke="#2d3748" stroke-width="3"/>
+                <circle cx="44" cy="10" r="4" fill="#a0aec0" stroke="#2d3748" stroke-width="3"/>
+                <line x1="18" y1="24" x2="46" y2="24" stroke="#2d3748" stroke-width="3" stroke-linecap="round"/>
+                <line x1="18" y1="34" x2="46" y2="34" stroke="#2d3748" stroke-width="3" stroke-linecap="round"/>
+                <line x1="18" y1="44" x2="36" y2="44" stroke="#2d3748" stroke-width="3" stroke-linecap="round"/>
+                <g transform="translate(36, 32) rotate(15)">
+                    <rect x="0" y="0" width="8" height="24" rx="2" fill="#fc8181" stroke="#2d3748" stroke-width="2.5"/>
+                    <polygon points="0,0 8,0 4,-6" fill="#fbd38d" stroke="#2d3748" stroke-width="2"/>
+                    <polygon points="3,-4 5,-4 4,-6" fill="#2d3748"/>
+                </g>
+            </svg>
+        </button>
+        <div class="theme-switch">
+            <label for="theme-toggle"></label>
+            <input type="checkbox" id="theme-toggle" onclick="toggleTheme()">
+        </div>
+    </div>
+
+    <!-- Notepad Memo -->
+    <div id="todo-notepad">
+        <div class="notepad-header">Tasks / 备忘录</div>
+        <div id="todo-list"></div>
+        <div class="todo-input-container">
+            <input type="text" id="todo-input" placeholder="Add task... / 新建任务..." onkeydown="if(event.key==='Enter') addTodoFromInput()"/>
+            <button onclick="addTodoFromInput()">+</button>
+        </div>
+    </div>
+
+    <!-- Main clock layout -->
+    <div class="container">
+        <pre id="code"></pre>
+        <div class="analog-clock">
+            <div class="hand hour-hand"></div>
+            <div class="hand minute-hand"></div>
+            <div class="hand second-hand"></div>
+            <div class="center-dot"></div>
+        </div>
+    </div>
+
+    <!-- Settings Button (Gear) -->
+    <button class="settings-btn" onclick="toggleSettingsDrawer()" title="Settings / 设置">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+    </button>
+
+    <!-- Settings Slide Drawer -->
+    <div id="settings-drawer">
+        <div class="drawer-header">
+            <span style="font-size: 18px; font-weight: bold;">Settings / 设置</span>
+            <button onclick="toggleSettingsDrawer()" style="background:none; border:none; color:inherit; font-size:24px; cursor:pointer; line-height: 1; outline:none;">&times;</button>
+        </div>
+
+        <!-- Toggles -->
+        <div style="margin-top: 10px;">
+            <div class="toggle-container">
+                <span class="toggle-label">Todo List / 待办事项</span>
+                <label class="switch">
+                    <input type="checkbox" id="settings-todo-toggle" onchange="toggleFeature('todoEnabled')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-container">
+                <span class="toggle-label">Anniversaries / 纪念日</span>
+                <label class="switch">
+                    <input type="checkbox" id="settings-anniversary-toggle" onchange="toggleFeature('anniversaryEnabled')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-container">
+                <span class="toggle-label">Goals / 目标倒计时</span>
+                <label class="switch">
+                    <input type="checkbox" id="settings-goal-toggle" onchange="toggleFeature('goalEnabled')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Anniversary Manager -->
+        <div class="drawer-divider">
+            <span style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Anniversaries / 纪念日</span>
+            <ul id="drawer-anniversary-list" class="item-list"></ul>
+            <div style="margin-top: 8px;">
+                <input type="text" id="add-anniversary-name" class="drawer-input" placeholder="e.g., Coding Life / 编程生涯">
+                <input type="date" id="add-anniversary-date" class="drawer-input">
+                <button onclick="addAnniversary()" class="drawer-btn">Add Anniversary / 添加</button>
+            </div>
+        </div>
+
+        <!-- Goal Manager -->
+        <div class="drawer-divider">
+            <span style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Goals / 目标倒计时</span>
+            <ul id="drawer-goal-list" class="item-list"></ul>
+            <div style="margin-top: 8px;">
+                <input type="text" id="add-goal-name" class="drawer-input" placeholder="e.g., New Year / 新年">
+                <input type="date" id="add-goal-date" class="drawer-input">
+                <button onclick="addGoal()" class="drawer-btn">Add Goal / 添加</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default data
+        const DEFAULT_SETTINGS = {
+            todoEnabled: true,
+            anniversaryEnabled: true,
+            goalEnabled: true
+        };
+        const DEFAULT_TODOS = [
+            { id: 1, text: "Fix layout bugs / 修复布局问题", completed: false },
+            { id: 2, text: "Refactor clock logic / 重构时钟逻辑", completed: false },
+            { id: 3, text: "Drink water & stretch / 喝水并拉伸", completed: false }
+        ];
+        const DEFAULT_ANNIVERSARIES = [
+            { id: 1, name: "Coding Life", date: "2020-01-01" }
+        ];
+        const DEFAULT_GOALS = [
+            { id: 1, name: "New Year", date: `${new Date().getFullYear() + 1}-01-01` }
+        ];
+
+        // Load data from localStorage
+        let settings = JSON.parse(localStorage.getItem('ct_settings')) || DEFAULT_SETTINGS;
+        let todos = JSON.parse(localStorage.getItem('ct_todos')) || DEFAULT_TODOS;
+        let anniversaries = JSON.parse(localStorage.getItem('ct_anniversaries')) || DEFAULT_ANNIVERSARIES;
+        let goals = JSON.parse(localStorage.getItem('ct_goals')) || DEFAULT_GOALS;
+
+        function saveSettings() { localStorage.setItem('ct_settings', JSON.stringify(settings)); }
+        function saveTodos() { localStorage.setItem('ct_todos', JSON.stringify(todos)); }
+        function saveAnniversaries() { localStorage.setItem('ct_anniversaries', JSON.stringify(anniversaries)); }
+        function saveGoals() { localStorage.setItem('ct_goals', JSON.stringify(goals)); }
+
+        // Date calculation helpers
+        function getDaysSince(dateStr) {
+            const start = new Date(dateStr);
+            start.setHours(0, 0, 0, 0);
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            const diffTime = now - start;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function getDaysUntil(dateStr) {
+            const target = new Date(dateStr);
+            target.setHours(0, 0, 0, 0);
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            const diffTime = target - now;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        // Format identifiers dynamically for central code theme display
+        function formatKey(prefix, name) {
+            let clean = name.trim().replace(/[^a-zA-Z0-9_\u4e00-\u9fa5]/g, '');
+            if (!clean) clean = 'Event';
+            const key = prefix + clean.charAt(0).toUpperCase() + clean.slice(1);
+            if (/^[a-zA-Z_$][a-zA-Z0-9_\u4e00-\u9fa5]*$/.test(key)) {
+                return `<span class="code">${key}</span>`;
+            } else {
+                return `<span class="string">"${key}"</span>`;
+            }
+        }
+
+        // Window interaction toggles
+        function toggleTodoNotepad() {
+            const notepad = document.getElementById('todo-notepad');
+            notepad.classList.toggle('open');
+        }
+
+        function toggleSettingsDrawer() {
+            const drawer = document.getElementById('settings-drawer');
+            drawer.classList.toggle('open');
+        }
+
+        function toggleFeature(featureKey) {
+            settings[featureKey] = !settings[featureKey];
+            saveSettings();
+            applySettings();
+            updateTime();
+        }
+
+        function applySettings() {
+            const todoToggleBtn = document.getElementById('todo-toggle');
+            const todoNotepad = document.getElementById('todo-notepad');
+            if (settings.todoEnabled) {
+                todoToggleBtn.style.display = 'flex';
+            } else {
+                todoToggleBtn.style.display = 'none';
+                todoNotepad.classList.remove('open');
+            }
+
+            document.getElementById('settings-todo-toggle').checked = settings.todoEnabled;
+            document.getElementById('settings-anniversary-toggle').checked = settings.anniversaryEnabled;
+            document.getElementById('settings-goal-toggle').checked = settings.goalEnabled;
+        }
+
+        // Todo items drawing & animation
+        function renderTodos() {
+            const listEl = document.getElementById('todo-list');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+
+            if (todos.length === 0) {
+                listEl.innerHTML = `<div style="text-align: center; color: #718096; padding: 20px; font-style: italic; font-size: 16px;">No tasks! / 暂无任务!</div>`;
+                return;
+            }
+
+            todos.forEach(todo => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'todo-item';
+                itemEl.setAttribute('data-id', todo.id);
+                itemEl.innerHTML = `
+                    <div class="todo-checkbox ${todo.completed ? 'checked' : ''}" onclick="completeTodo(${todo.id})"></div>
+                    <span class="todo-item-text ${todo.completed ? 'completed' : ''}" title="${todo.text}">${todo.text}</span>
+                `;
+                listEl.appendChild(itemEl);
+            });
+        }
+
+        function addTodoFromInput() {
+            const input = document.getElementById('todo-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const newTodo = {
+                id: Date.now(),
+                text: text,
+                completed: false
+            };
+            todos.push(newTodo);
+            saveTodos();
+            renderTodos();
+            input.value = '';
+        }
+
+        function completeTodo(id) {
+            const todoIndex = todos.findIndex(t => t.id === id);
+            if (todoIndex === -1) return;
+
+            const todoEl = document.querySelector(`.todo-item[data-id="${id}"]`);
+            if (!todoEl) return;
+
+            const checkboxEl = todoEl.querySelector('.todo-checkbox');
+            const textEl = todoEl.querySelector('.todo-item-text');
+
+            checkboxEl.classList.add('checked');
+            textEl.classList.add('completed');
+
+            setTimeout(() => {
+                todoEl.classList.add('removing');
+                setTimeout(() => {
+                    todos.splice(todoIndex, 1);
+                    saveTodos();
+                    renderTodos();
+                }, 400);
+            }, 400);
+        }
+
+        // Anniversary list CRUD operations
+        function renderAnniversaries() {
+            const listEl = document.getElementById('drawer-anniversary-list');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+
+            if (anniversaries.length === 0) {
+                listEl.innerHTML = `<li style="text-align:center; color:#718096; font-size:12px; padding: 10px 0;">None / 暂无</li>`;
+                return;
+            }
+
+            anniversaries.forEach(item => {
+                const row = document.createElement('li');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <span>${item.name} (${item.date})</span>
+                    <button class="delete-btn" onclick="deleteAnniversary(${item.id})">🗑️</button>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        function addAnniversary() {
+            const nameInput = document.getElementById('add-anniversary-name');
+            const dateInput = document.getElementById('add-anniversary-date');
+            const name = nameInput.value.trim();
+            const date = dateInput.value;
+
+            if (!name || !date) return;
+
+            const newItem = {
+                id: Date.now(),
+                name: name,
+                date: date
+            };
+            anniversaries.push(newItem);
+            saveAnniversaries();
+            renderAnniversaries();
+            updateTime();
+
+            nameInput.value = '';
+            dateInput.value = '';
+        }
+
+        function deleteAnniversary(id) {
+            anniversaries = anniversaries.filter(item => item.id !== id);
+            saveAnniversaries();
+            renderAnniversaries();
+            updateTime();
+        }
+
+        // Goal list CRUD operations
+        function renderGoals() {
+            const listEl = document.getElementById('drawer-goal-list');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+
+            if (goals.length === 0) {
+                listEl.innerHTML = `<li style="text-align:center; color:#718096; font-size:12px; padding: 10px 0;">None / 暂无</li>`;
+                return;
+            }
+
+            goals.forEach(item => {
+                const row = document.createElement('li');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <span>${item.name} (${item.date})</span>
+                    <button class="delete-btn" onclick="deleteGoal(${item.id})">🗑️</button>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        function addGoal() {
+            const nameInput = document.getElementById('add-goal-name');
+            const dateInput = document.getElementById('add-goal-date');
+            const name = nameInput.value.trim();
+            const date = dateInput.value;
+
+            if (!name || !date) return;
+
+            const newItem = {
+                id: Date.now(),
+                name: name,
+                date: date
+            };
+            goals.push(newItem);
+            saveGoals();
+            renderGoals();
+            updateTime();
+
+            nameInput.value = '';
+            dateInput.value = '';
+        }
+
+        function deleteGoal(id) {
+            goals = goals.filter(item => item.id !== id);
+            saveGoals();
+            renderGoals();
+            updateTime();
+        }
+
+        // Closing drawer/notepad when clicking outside
+        document.addEventListener('click', (e) => {
+            const notepad = document.getElementById('todo-notepad');
+            const toggleBtn = document.getElementById('todo-toggle');
+            if (notepad && notepad.classList.contains('open') && !notepad.contains(e.target) && !toggleBtn.contains(e.target)) {
+                notepad.classList.remove('open');
+            }
+
+            const drawer = document.getElementById('settings-drawer');
+            const settingsBtn = document.querySelector('.settings-btn');
+            if (drawer && drawer.classList.contains('open') && !drawer.contains(e.target) && !settingsBtn.contains(e.target)) {
+                drawer.classList.remove('open');
+            }
+        });
+
+        // Time calculations and Javascript Object formatting
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const dayOfWeek = now.toLocaleString('en', { weekday: 'long' });
+
+            const startOfDay = new Date(now);
+            startOfDay.setHours(0, 0, 0, 0);
+            const progress = ((now - startOfDay) / 86400000) * 100;
+
+            const isDarkTheme = document.body.classList.contains('animated-background-dark');
+            const numberColor = isDarkTheme ? '#dcdcaa' : '#1e3a8a';
+
+            let extraProperties = '';
+            if (settings.anniversaryEnabled && anniversaries.length > 0) {
+                anniversaries.forEach(item => {
+                    const days = getDaysSince(item.date);
+                    const keyHtml = formatKey('daysSince', item.name);
+                    extraProperties += `,\n    ${keyHtml}: <span class="number" style="color: ${numberColor}">${days}</span>`;
+                });
+            }
+            if (settings.goalEnabled && goals.length > 0) {
+                goals.forEach(item => {
+                    const days = getDaysUntil(item.date);
+                    const keyHtml = formatKey('daysUntil', item.name);
+                    extraProperties += `,\n    ${keyHtml}: <span class="number" style="color: ${numberColor}">${days}</span>`;
+                });
+            }
+
+            const codeString = `
+<span class="code">const</span> currentTime = {
+    <span class="code">year</span>: <span class="number" style="color: ${numberColor}">${year}</span>,
+    <span class="code">month</span>: <span class="number" style="color: ${numberColor}">${month}</span>,
+    <span class="code">day</span>: <span class="number" style="color: ${numberColor}">${day}</span>,
+    <span class="code">dayOfWeek</span>: <span class="string">"${dayOfWeek}"</span>,
+    <span class="code">hour</span>: <span class="number" style="color: ${numberColor}">${hours}</span>,
+    <span class="code">minute</span>: <span class="number" style="color: ${numberColor}">${minutes}</span>,
+    <span class="code">second</span>: <span class="number" style="color: ${numberColor}">${seconds}</span>,
+    <span class="code">dayProgress</span>: <span class="number" style="color: ${numberColor}">${progress.toFixed(2)}%</span>${extraProperties}
+};
+            `;
+
+            document.getElementById('code').innerHTML = codeString;
+
+            const hourHand = document.querySelector('.hour-hand');
+            const minuteHand = document.querySelector('.minute-hand');
+            const secondHand = document.querySelector('.second-hand');
+
+            const hourDeg = (now.getHours() % 12) * 30 + (now.getMinutes() * 0.5);
+            const minuteDeg = now.getMinutes() * 6 + (now.getSeconds() * 0.1);
+            const secondDeg = now.getSeconds() * 6;
+
+            hourHand.style.transform = `rotate(${hourDeg}deg)`;
+            minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+            secondHand.style.transform = `rotate(${secondDeg}deg)`;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.contains('animated-background-dark');
+
+            if (isDark) {
+                body.classList.remove('animated-background-dark');
+                body.classList.add('animated-background-light');
+                body.style.color = '#1e1e1e';
+            } else {
+                body.classList.remove('animated-background-light');
+                body.classList.add('animated-background-dark');
+                body.style.color = '#d4d4d4';
+            }
+
+            updateTime();
+        }
+
+        // Initialize script logic
+        applySettings();
+        renderTodos();
+        renderAnniversaries();
+        renderGoals();
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>

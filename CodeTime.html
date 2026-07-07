@@ -664,9 +664,261 @@
         .delete-btn:hover {
             color: #fc8181;
         }
+
+        /* Album Button - Top Left */
+        .top-left-controls {
+            position: absolute;
+            top: 28px;
+            left: 28px;
+            z-index: 150;
+        }
+
+        #album-toggle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #569cd6;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px rgba(86, 156, 214, 0.4);
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+            color: #1e1e1e;
+            outline: none;
+        }
+
+        #album-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 18px rgba(86, 156, 214, 0.6);
+        }
+
+        .animated-background-light #album-toggle {
+            background: #dcdcaa;
+            box-shadow: 0 0 12px rgba(220, 220, 170, 0.4);
+        }
+
+        .animated-background-light #album-toggle:hover {
+            box-shadow: 0 0 18px rgba(220, 220, 170, 0.6);
+        }
+
+        /* Album Gallery Panel */
+        #album-panel {
+            position: absolute;
+            top: 85px;
+            left: 28px;
+            width: 360px;
+            max-height: 480px;
+            background: rgba(30, 30, 30, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            color: #d4d4d4;
+            font-family: Consolas, 'Courier New', monospace;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.9) translateY(-20px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            z-index: 140;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #album-panel.open {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .animated-background-light #album-panel {
+            background: rgba(243, 243, 243, 0.92);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #1e1e1e;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .album-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .animated-background-light .album-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Upload Area */
+        .album-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s, background 0.3s;
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .album-upload-area:hover {
+            border-color: #569cd6;
+            background: rgba(86, 156, 214, 0.05);
+        }
+
+        .animated-background-light .album-upload-area {
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .animated-background-light .album-upload-area:hover {
+            border-color: #dcdcaa;
+            background: rgba(220, 220, 170, 0.08);
+        }
+
+        .album-upload-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        /* Photo Grid */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        .album-grid::-webkit-scrollbar {
+            width: 5px;
+        }
+        .album-grid::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        .animated-background-light .album-grid::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .album-thumb {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .album-thumb:hover {
+            transform: scale(1.05);
+        }
+
+        .album-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .album-thumb .thumb-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(229, 62, 62, 0.85);
+            border: none;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .album-thumb:hover .thumb-delete {
+            display: flex;
+        }
+
+        .album-empty {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            font-size: 13px;
+            padding: 20px 0;
+        }
+
+        /* Lightbox Overlay */
+        #album-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.88);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        #album-lightbox.open {
+            display: flex;
+        }
+
+        #album-lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            object-fit: contain;
+        }
     </style>
 </head>
 <body class="animated-background-dark">
+    <!-- Album Button - Top Left -->
+    <div class="top-left-controls">
+        <button id="album-toggle" onclick="toggleAlbumPanel()" title="Photo Album">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Album Gallery Panel -->
+    <div id="album-panel">
+        <div class="album-header">
+            <span id="album-title">Photo Album</span>
+            <button onclick="toggleAlbumPanel()" style="background:none; border:none; color:inherit; font-size:20px; cursor:pointer; line-height:1; outline:none;">&times;</button>
+        </div>
+        <div class="album-upload-area" onclick="document.getElementById('album-file-input').click()">
+            <span class="album-upload-icon">📷</span>
+            <span id="album-upload-text">Click to upload photos</span>
+        </div>
+        <input type="file" id="album-file-input" accept="image/*" multiple style="display:none" onchange="handleAlbumUpload(event)">
+        <div id="album-grid" class="album-grid"></div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="album-lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="">
+    </div>
     <div class="top-right-controls">
         <button id="todo-toggle" onclick="toggleTodoNotepad()" title="Todo List">
             <svg viewBox="0 0 64 64" width="24" height="24">
@@ -782,14 +1034,14 @@
 
     <script>
         const TRANSLATIONS = {
-            'zh-CN': { notepadHeader: "备忘录", addPlaceholder: "新建任务...", noTasks: "暂无任务!", settingsTitle: "设置", todoToggleLabel: "待办事项", anniversaryLabel: "纪念日", goalLabel: "目标倒计时", anniversaryTitle: "纪念日管理", goalTitle: "目标管理", anniversaryPlaceholder: "例如：编程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名称", dateLabel: "日期", langSettingLabel: "语言设置", none: "暂无" },
-            'zh-TW': { notepadHeader: "備忘錄", addPlaceholder: "新建任務...", noTasks: "暫無任務!", settingsTitle: "設置", todoToggleLabel: "待辦事項", anniversaryLabel: "紀念日", goalLabel: "目標倒計時", anniversaryTitle: "紀念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例如：編程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名稱", dateLabel: "日期", langSettingLabel: "語言設置", none: "暫無" },
-            'en': { notepadHeader: "Tasks", addPlaceholder: "Add task...", noTasks: "No tasks!", settingsTitle: "Settings", todoToggleLabel: "Todo List", anniversaryLabel: "Anniversaries", goalLabel: "Goals", anniversaryTitle: "Anniversaries", goalTitle: "Goals", anniversaryPlaceholder: "e.g., Coding Life", goalPlaceholder: "e.g., New Year", addButton: "Add", nameLabel: "Name", dateLabel: "Date", langSettingLabel: "Language", none: "None" },
-            'es': { notepadHeader: "Tareas", addPlaceholder: "Agregar tarea...", noTasks: "¡Sin tareas!", settingsTitle: "Configuración", todoToggleLabel: "Lista de tareas", anniversaryLabel: "Aniversarios", goalLabel: "Metas", anniversaryTitle: "Gestión de Aniversarios", goalTitle: "Gestión de Metas", anniversaryPlaceholder: "ej., Vida de programador", goalPlaceholder: "ej., Año Nuevo", addButton: "Agregar", nameLabel: "Nombre", dateLabel: "Fecha", langSettingLabel: "Idioma", none: "Ninguno" },
-            'pt': { notepadHeader: "Tarefas", addPlaceholder: "Adicionar tarefa...", noTasks: "Sem tarefas!", settingsTitle: "Configurações", todoToggleLabel: "Lista de tarefas", anniversaryLabel: "Aniversários", goalLabel: "Metas", anniversaryTitle: "Gerenciamento de Aniversários", goalTitle: "Gerenciamento de Metas", anniversaryPlaceholder: "ex., Vida de programador", goalPlaceholder: "ex., Ano Novo", addButton: "Adicionar", nameLabel: "Nome", dateLabel: "Data", langSettingLabel: "Idioma", none: "Nenhum" },
-            'ja': { notepadHeader: "メモ帳", addPlaceholder: "タスクを追加...", noTasks: "タスクはありません！", settingsTitle: "設定", todoToggleLabel: "やることリスト", anniversaryLabel: "記念日", goalLabel: "目標カウントダウン", anniversaryTitle: "記念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例：プログラミング人生", goalPlaceholder: "例：新年", addButton: "追加", nameLabel: "名前", dateLabel: "日付", langSettingLabel: "言語設定", none: "なし" },
-            'ko': { notepadHeader: "메모장", addPlaceholder: "작업 추가...", noTasks: "작업이 없습니다!", settingsTitle: "설정", todoToggleLabel: "할 일 목록", anniversaryLabel: "기념일", goalLabel: "목표 카운트다운", anniversaryTitle: "기념일 관리", goalTitle: "목표 관리", anniversaryPlaceholder: "예: 프로그래밍 라이프", goalPlaceholder: "예: 새해", addButton: "추가", nameLabel: "이름", dateLabel: "날짜", langSettingLabel: "언어 설정", none: "없음" },
-            'fr': { notepadHeader: "Tâches", addPlaceholder: "Ajouter une tâche...", noTasks: "Pas de tâches !", settingsTitle: "Paramètres", todoToggleLabel: "Liste de tâches", anniversaryLabel: "Anniversaires", goalLabel: "Objectifs", anniversaryTitle: "Gestion des Anniversaires", goalTitle: "Gestion des Objectifs", anniversaryPlaceholder: "ex., Vie de développeur", goalPlaceholder: "ex., Nouvel An", addButton: "Ajouter", nameLabel: "Nom", dateLabel: "Date", langSettingLabel: "Langue", none: "Aucun" }
+            'zh-CN': { notepadHeader: "备忘录", addPlaceholder: "新建任务...", noTasks: "暂无任务!", settingsTitle: "设置", todoToggleLabel: "待办事项", anniversaryLabel: "纪念日", goalLabel: "目标倒计时", anniversaryTitle: "纪念日管理", goalTitle: "目标管理", anniversaryPlaceholder: "例如：编程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名称", dateLabel: "日期", langSettingLabel: "语言设置", none: "暂无", albumTitle: "相册", albumUpload: "点击上传照片", albumEmpty: "暂无照片" },
+            'zh-TW': { notepadHeader: "備忘錄", addPlaceholder: "新建任務...", noTasks: "暫無任務!", settingsTitle: "設置", todoToggleLabel: "待辦事項", anniversaryLabel: "紀念日", goalLabel: "目標倒計時", anniversaryTitle: "紀念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例如：編程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名稱", dateLabel: "日期", langSettingLabel: "語言設置", none: "暫無", albumTitle: "相簿", albumUpload: "點擊上傳照片", albumEmpty: "暫無照片" },
+            'en': { notepadHeader: "Tasks", addPlaceholder: "Add task...", noTasks: "No tasks!", settingsTitle: "Settings", todoToggleLabel: "Todo List", anniversaryLabel: "Anniversaries", goalLabel: "Goals", anniversaryTitle: "Anniversaries", goalTitle: "Goals", anniversaryPlaceholder: "e.g., Coding Life", goalPlaceholder: "e.g., New Year", addButton: "Add", nameLabel: "Name", dateLabel: "Date", langSettingLabel: "Language", none: "None", albumTitle: "Photo Album", albumUpload: "Click to upload photos", albumEmpty: "No photos yet" },
+            'es': { notepadHeader: "Tareas", addPlaceholder: "Agregar tarea...", noTasks: "¡Sin tareas!", settingsTitle: "Configuración", todoToggleLabel: "Lista de tareas", anniversaryLabel: "Aniversarios", goalLabel: "Metas", anniversaryTitle: "Gestión de Aniversarios", goalTitle: "Gestión de Metas", anniversaryPlaceholder: "ej., Vida de programador", goalPlaceholder: "ej., Año Nuevo", addButton: "Agregar", nameLabel: "Nombre", dateLabel: "Fecha", langSettingLabel: "Idioma", none: "Ninguno", albumTitle: "Álbum de fotos", albumUpload: "Haz clic para subir fotos", albumEmpty: "Sin fotos aún" },
+            'pt': { notepadHeader: "Tarefas", addPlaceholder: "Adicionar tarefa...", noTasks: "Sem tarefas!", settingsTitle: "Configurações", todoToggleLabel: "Lista de tarefas", anniversaryLabel: "Aniversários", goalLabel: "Metas", anniversaryTitle: "Gerenciamento de Aniversários", goalTitle: "Gerenciamento de Metas", anniversaryPlaceholder: "ex., Vida de programador", goalPlaceholder: "ex., Ano Novo", addButton: "Adicionar", nameLabel: "Nome", dateLabel: "Data", langSettingLabel: "Idioma", none: "Nenhum", albumTitle: "Álbum de fotos", albumUpload: "Clique para enviar fotos", albumEmpty: "Sem fotos ainda" },
+            'ja': { notepadHeader: "メモ帳", addPlaceholder: "タスクを追加...", noTasks: "タスクはありません！", settingsTitle: "設定", todoToggleLabel: "やることリスト", anniversaryLabel: "記念日", goalLabel: "目標カウントダウン", anniversaryTitle: "記念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例：プログラミング人生", goalPlaceholder: "例：新年", addButton: "追加", nameLabel: "名前", dateLabel: "日付", langSettingLabel: "言語設定", none: "なし", albumTitle: "フォトアルバム", albumUpload: "クリックして写真をアップロード", albumEmpty: "写真はまだありません" },
+            'ko': { notepadHeader: "메모장", addPlaceholder: "작업 추가...", noTasks: "작업이 없습니다!", settingsTitle: "설정", todoToggleLabel: "할 일 목록", anniversaryLabel: "기념일", goalLabel: "목표 카운트다운", anniversaryTitle: "기념일 관리", goalTitle: "목표 관리", anniversaryPlaceholder: "예: 프로그래밍 라이프", goalPlaceholder: "예: 새해", addButton: "추가", nameLabel: "이름", dateLabel: "날짜", langSettingLabel: "언어 설정", none: "없음", albumTitle: "포토 앨범", albumUpload: "클릭하여 사진 업로드", albumEmpty: "사진이 없습니다" },
+            'fr': { notepadHeader: "Tâches", addPlaceholder: "Ajouter une tâche...", noTasks: "Pas de tâches !", settingsTitle: "Paramètres", todoToggleLabel: "Liste de tâches", anniversaryLabel: "Anniversaires", goalLabel: "Objectifs", anniversaryTitle: "Gestion des Anniversaires", goalTitle: "Gestion des Objectifs", anniversaryPlaceholder: "ex., Vie de développeur", goalPlaceholder: "ex., Nouvel An", addButton: "Ajouter", nameLabel: "Nom", dateLabel: "Date", langSettingLabel: "Langue", none: "Aucun", albumTitle: "Album photo", albumUpload: "Cliquez pour télécharger des photos", albumEmpty: "Pas encore de photos" }
         };
 
         const DEFAULT_DATA = {
@@ -839,6 +1091,9 @@
             document.getElementById('btn-add-anniversary').textContent = `${t.addButton} ${t.anniversaryLabel}`;
             document.getElementById('btn-add-goal').textContent = `${t.addButton} ${t.goalLabel}`;
             document.getElementById('lang-select-label').textContent = t.langSettingLabel;
+            document.getElementById('album-title').textContent = t.albumTitle;
+            document.getElementById('album-upload-text').textContent = t.albumUpload;
+            renderAlbum();
         }
 
         function onLanguageChange() { currentLang = document.getElementById('settings-lang').value; localStorage.setItem('ct_lang', currentLang); applyTranslations(); renderTodos(); renderAnniversaries(); renderGoals(); updateTime(); }
@@ -895,7 +1150,7 @@
         function addGoal() { const nameInput = document.getElementById('add-goal-name'), dateInput = document.getElementById('add-goal-date'); const name = nameInput.value.trim(), date = dateInput.value; if (!name || !date) return; goals.push({ id: Date.now(), name, date }); saveGoals(); renderGoals(); updateTime(); nameInput.value = ''; dateInput.value = ''; }
         function deleteGoal(id) { goals = goals.filter(i => i.id !== id); saveGoals(); renderGoals(); updateTime(); }
 
-        document.addEventListener('click', (e) => { const notepad = document.getElementById('todo-notepad'); if (notepad.classList.contains('open') && !notepad.contains(e.target) && !document.getElementById('todo-toggle').contains(e.target)) notepad.classList.remove('open'); const drawer = document.getElementById('settings-drawer'); if (drawer.classList.contains('open') && !drawer.contains(e.target) && !document.querySelector('.settings-btn').contains(e.target)) drawer.classList.remove('open'); });
+        document.addEventListener('click', (e) => { const notepad = document.getElementById('todo-notepad'); if (notepad.classList.contains('open') && !notepad.contains(e.target) && !document.getElementById('todo-toggle').contains(e.target)) notepad.classList.remove('open'); const drawer = document.getElementById('settings-drawer'); if (drawer.classList.contains('open') && !drawer.contains(e.target) && !document.querySelector('.settings-btn').contains(e.target)) drawer.classList.remove('open'); const album = document.getElementById('album-panel'); if (album.classList.contains('open') && !album.contains(e.target) && !document.getElementById('album-toggle').contains(e.target)) album.classList.remove('open'); });
 
         function updateTime() {
             const now = new Date();
@@ -914,7 +1169,74 @@
         }
 
         function toggleTheme() { document.body.classList.toggle('animated-background-dark'); document.body.classList.toggle('animated-background-light'); updateTime(); }
-        applySettings(); renderTodos(); renderAnniversaries(); renderGoals(); setInterval(updateTime, 1000); updateTime();
+        // Album (Photo Gallery) Logic
+        let albumPhotos = JSON.parse(localStorage.getItem('ct_album')) || [];
+        function saveAlbum() { localStorage.setItem('ct_album', JSON.stringify(albumPhotos)); }
+        function toggleAlbumPanel() { document.getElementById('album-panel').classList.toggle('open'); }
+
+        function handleAlbumUpload(event) {
+            const files = event.target.files;
+            if (!files.length) return;
+            const maxSize = 800; // resize to max 800px for localStorage efficiency
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if (w > maxSize || h > maxSize) {
+                            if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+                            else { w = Math.round(w * maxSize / h); h = maxSize; }
+                        }
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                        albumPhotos.push({ id: Date.now() + Math.random(), src: dataUrl });
+                        saveAlbum();
+                        renderAlbum();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+            event.target.value = '';
+        }
+
+        function deletePhoto(id) {
+            albumPhotos = albumPhotos.filter(p => p.id !== id);
+            saveAlbum();
+            renderAlbum();
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('album-lightbox').classList.add('open');
+        }
+
+        function closeLightbox() {
+            document.getElementById('album-lightbox').classList.remove('open');
+            document.getElementById('lightbox-img').src = '';
+        }
+
+        function renderAlbum() {
+            const grid = document.getElementById('album-grid');
+            grid.innerHTML = '';
+            if (albumPhotos.length === 0) {
+                const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
+                grid.innerHTML = `<div class="album-empty" style="grid-column: 1/-1;">${t.albumEmpty}</div>`;
+                return;
+            }
+            albumPhotos.forEach(photo => {
+                const thumb = document.createElement('div');
+                thumb.className = 'album-thumb';
+                thumb.innerHTML = `<img src="${photo.src}" onclick="openLightbox(this.src)"><button class="thumb-delete" onclick="event.stopPropagation(); deletePhoto(${photo.id})">&times;</button>`;
+                grid.appendChild(thumb);
+            });
+        }
+
+        applySettings(); renderTodos(); renderAnniversaries(); renderGoals(); renderAlbum(); setInterval(updateTime, 1000); updateTime();
     </script>
 </body>
 </html>

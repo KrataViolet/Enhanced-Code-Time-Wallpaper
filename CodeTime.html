@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Clock</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Klee+One:wght@400;600&family=Nanum+Pen+Script&display=swap');
+
         :root {
             --font-size: 25.2px;
             --gap: 56px;
@@ -100,8 +102,6 @@
             background: #000;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400..700&family=Cute+Font&family=Indie+Flower&family=Klee+One:wght@400;600&family=Ma+Shan+Zheng&family=Nanum+Pen+Script&family=Patrick+Hand&family=Yuji+Syuku&family=Zhi+Mang+Xing&display=swap');
-
         /* Top Bar & Controls styling */
         .top-right-controls {
             position: absolute;
@@ -156,7 +156,6 @@
 
         .theme-switch input[type="checkbox"]:checked { background: #dcdcaa; }
 
-        /* Circular trigger button styling, matching the settings button style */
         #todo-toggle {
             width: 42px;
             height: 42px;
@@ -191,7 +190,6 @@
             box-shadow: 0 0 18px rgba(220, 220, 170, 0.6);
         }
 
-        /* Notepad styles */
         #todo-notepad {
             position: absolute;
             top: 85px;
@@ -202,7 +200,7 @@
             border-radius: 8px;
             box-shadow: 6px 6px 0px #d4d4d4;
             color: #e2e8f0;
-            font-family: var(--todo-font-main, 'Klee One'), var(--todo-font-english, 'Caveat'), 'Segoe UI', cursive, monospace;
+            font-family: 'Caveat', 'Klee One', 'Nanum Pen Script', 'Segoe UI', cursive, sans-serif;
             padding: 16px;
             box-sizing: border-box;
             opacity: 0;
@@ -222,7 +220,6 @@
         }
 
         .notepad-header {
-            font-family: inherit;
             font-weight: bold;
             font-size: 20px;
             border-bottom: 2px solid #d4d4d4;
@@ -306,7 +303,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 250px;
-            font-family: inherit;
         }
 
         .todo-item-text.completed {
@@ -661,7 +657,7 @@
 </head>
 <body class="animated-background-dark">
     <div class="top-right-controls">
-        <button id="todo-toggle" onclick="toggleTodoNotepad()" title="Todo List / 待办事项">
+        <button id="todo-toggle" onclick="toggleTodoNotepad()" title="Todo List">
             <svg viewBox="0 0 64 64" width="24" height="24">
                 <rect x="8" y="10" width="48" height="48" rx="8" fill="#ffe066" stroke="#2d3748" stroke-width="4"/>
                 <circle cx="20" cy="10" r="4" fill="#a0aec0" stroke="#2d3748" stroke-width="3"/>
@@ -684,10 +680,10 @@
     </div>
 
     <div id="todo-notepad">
-        <div class="notepad-header">Tasks / 备忘录</div>
+        <div class="notepad-header">Tasks</div>
         <div id="todo-list"></div>
         <div class="todo-input-container">
-            <input type="text" id="todo-input" placeholder="Add task... / 新建任务..." onkeydown="if(event.key==='Enter') addTodoFromInput()"/>
+            <input type="text" id="todo-input" placeholder="Add task..." onkeydown="if(event.key==='Enter') addTodoFromInput()"/>
             <button onclick="addTodoFromInput()">+</button>
         </div>
     </div>
@@ -702,7 +698,7 @@
         </div>
     </div>
 
-    <button class="settings-btn" onclick="toggleSettingsDrawer()" title="Settings / 设置">
+    <button class="settings-btn" onclick="toggleSettingsDrawer()" title="Settings">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
         </svg>
@@ -710,12 +706,12 @@
 
     <div id="settings-drawer">
         <div class="drawer-header">
-            <span>Settings / 设置</span>
+            <span>Settings</span>
             <button onclick="toggleSettingsDrawer()" style="background:none; border:none; color:inherit; font-size:24px; cursor:pointer; line-height: 1; outline:none;">&times;</button>
         </div>
 
         <div class="drawer-divider" style="border-top:none; padding-top:0;">
-            <span id="lang-select-label" style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Language / 语言</span>
+            <span id="lang-select-label" style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Language</span>
             <select id="settings-lang" class="drawer-input" onchange="onLanguageChange()">
                 <option value="zh-CN">简体中文</option>
                 <option value="zh-TW">繁體中文</option>
@@ -729,36 +725,22 @@
         </div>
 
         <div class="drawer-divider">
-            <span style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;" id="font-settings-label">Handwriting Fonts / 手写字体</span>
-            
-            <div id="main-font-group">
-                <label id="main-font-label" style="font-size:12px; opacity:0.8; display:block; margin-top:5px;">Primary Font / 主语言字体</label>
-                <select id="settings-main-font" class="drawer-input" onchange="onMainFontChange()"></select>
-            </div>
-            
-            <div id="eng-font-group">
-                <label id="eng-font-label" style="font-size:12px; opacity:0.8; display:block; margin-top:5px;">English/Fallback Font / 英语/辅助字体</label>
-                <select id="settings-eng-font" class="drawer-input" onchange="onEngFontChange()"></select>
-            </div>
-        </div>
-
-        <div class="drawer-divider">
             <div class="toggle-container">
-                <span class="toggle-label">Todo List / 待办事项</span>
+                <span class="toggle-label">Todo List</span>
                 <label class="switch">
                     <input type="checkbox" id="settings-todo-toggle" onchange="toggleFeature('todoEnabled')">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="toggle-container">
-                <span class="toggle-label">Anniversaries / 纪念日</span>
+                <span class="toggle-label">Anniversaries</span>
                 <label class="switch">
                     <input type="checkbox" id="settings-anniversary-toggle" onchange="toggleFeature('anniversaryEnabled')">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="toggle-container">
-                <span class="toggle-label">Goals / 目标倒计时</span>
+                <span class="toggle-label">Goals</span>
                 <label class="switch">
                     <input type="checkbox" id="settings-goal-toggle" onchange="toggleFeature('goalEnabled')">
                     <span class="slider"></span>
@@ -767,115 +749,69 @@
         </div>
 
         <div class="drawer-divider">
-            <span style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Anniversaries / 纪念日</span>
+            <span>Anniversaries</span>
             <ul id="drawer-anniversary-list" class="item-list"></ul>
             <div style="margin-top: 8px;">
                 <input type="text" id="add-anniversary-name" class="drawer-input">
                 <input type="date" id="add-anniversary-date" class="drawer-input">
-                <button onclick="addAnniversary()" class="drawer-btn">Add Anniversary / 添加</button>
+                <button onclick="addAnniversary()" class="drawer-btn">Add Anniversary</button>
             </div>
         </div>
 
         <div class="drawer-divider">
-            <span style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Goals / 目标倒计时</span>
+            <span>Goals</span>
             <ul id="drawer-goal-list" class="item-list"></ul>
             <div style="margin-top: 8px;">
                 <input type="text" id="add-goal-name" class="drawer-input">
                 <input type="date" id="add-goal-date" class="drawer-input">
-                <button onclick="addGoal()" class="drawer-btn">Add Goal / 添加</button>
+                <button onclick="addGoal()" class="drawer-btn">Add Goal</button>
             </div>
         </div>
     </div>
 
     <script>
         const TRANSLATIONS = {
-            'zh-CN': { notepadHeader: "备忘录", addPlaceholder: "新建任务...", noTasks: "暂无任务!", settingsTitle: "设置", todoToggleLabel: "待办事项", anniversaryLabel: "纪念日", goalLabel: "目标倒计时", anniversaryTitle: "纪念日管理", goalTitle: "目标管理", anniversaryPlaceholder: "例如：编程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名称", dateLabel: "日期", mainFontLabel: "主语言字体", engFontLabel: "英语/辅助字体", langSettingLabel: "语言设置", none: "暂无" },
-            'zh-TW': { notepadHeader: "備忘錄", addPlaceholder: "新建任務...", noTasks: "暫無任務!", settingsTitle: "設置", todoToggleLabel: "待辦事項", anniversaryLabel: "紀念日", goalLabel: "目標倒計時", anniversaryTitle: "紀念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例如：編程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名稱", dateLabel: "日期", mainFontLabel: "主語言字體", engFontLabel: "英語/輔助字體", langSettingLabel: "語言設置", none: "暫無" },
-            'en': { notepadHeader: "Tasks", addPlaceholder: "Add task...", noTasks: "No tasks!", settingsTitle: "Settings", todoToggleLabel: "Todo List", anniversaryLabel: "Anniversaries", goalLabel: "Goals", anniversaryTitle: "Anniversaries", goalTitle: "Goals", anniversaryPlaceholder: "e.g., Coding Life", goalPlaceholder: "e.g., New Year", addButton: "Add", nameLabel: "Name", dateLabel: "Date", mainFontLabel: "Primary Font", engFontLabel: "English Font", langSettingLabel: "Language", none: "None" },
-            'es': { notepadHeader: "Tareas", addPlaceholder: "Agregar tarea...", noTasks: "¡Sin tareas!", settingsTitle: "Configuración", todoToggleLabel: "Lista de tareas", anniversaryLabel: "Aniversarios", goalLabel: "Metas", anniversaryTitle: "Gestión de Aniversarios", goalTitle: "Gestión de Metas", anniversaryPlaceholder: "ej., Vida de programador", goalPlaceholder: "ej., Año Nuevo", addButton: "Agregar", nameLabel: "Nombre", dateLabel: "Fecha", mainFontLabel: "Fuente Principal", engFontLabel: "Fuente de Inglés", langSettingLabel: "Idioma", none: "Ninguno" },
-            'pt': { notepadHeader: "Tarefas", addPlaceholder: "Adicionar tarefa...", noTasks: "Sem tarefas!", settingsTitle: "Configurações", todoToggleLabel: "Lista de tarefas", anniversaryLabel: "Aniversários", goalLabel: "Metas", anniversaryTitle: "Gerenciamento de Aniversários", goalTitle: "Gerenciamento de Metas", anniversaryPlaceholder: "ex., Vida de programador", goalPlaceholder: "ex., Ano Novo", addButton: "Adicionar", nameLabel: "Nome", dateLabel: "Data", mainFontLabel: "Fonte Principal", engFontLabel: "Fonte de Inglés", langSettingLabel: "Idioma", none: "Nenhum" },
-            'ja': { notepadHeader: "メモ帳", addPlaceholder: "タスクを追加...", noTasks: "タスクはありません！", settingsTitle: "設定", todoToggleLabel: "やることリスト", anniversaryLabel: "記念日", goalLabel: "目標カウントダウン", anniversaryTitle: "記念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例：プログラミング人生", goalPlaceholder: "例：新年", addButton: "追加", nameLabel: "名前", dateLabel: "日付", mainFontLabel: "メインフォント", engFontLabel: "英語フォント", langSettingLabel: "言語設定", none: "なし" },
-            'ko': { notepadHeader: "메모장", addPlaceholder: "작업 추가...", noTasks: "작업이 없습니다!", settingsTitle: "설정", todoToggleLabel: "할 일 목록", anniversaryLabel: "기념일", goalLabel: "목표 카운트다운", anniversaryTitle: "기념일 관리", goalTitle: "목표 관리", anniversaryPlaceholder: "예: 프로그래밍 라이프", goalPlaceholder: "예: 새해", addButton: "추가", nameLabel: "이름", dateLabel: "날짜", mainFontLabel: "기본 글꼴", engFontLabel: "영어 글꼴", langSettingLabel: "언어 설정", none: "없음" },
-            'fr': { notepadHeader: "Tâches", addPlaceholder: "Ajouter une tâche...", noTasks: "Pas de tâches !", settingsTitle: "Paramètres", todoToggleLabel: "Liste de tâches", anniversaryLabel: "Anniversaires", goalLabel: "Objectifs", anniversaryTitle: "Gestion des Anniversaires", goalTitle: "Gestion des Objectifs", anniversaryPlaceholder: "ex., Vie de développeur", goalPlaceholder: "ex., Nouvel An", addButton: "Ajouter", nameLabel: "Nom", dateLabel: "Date", mainFontLabel: "Police Principale", engFontLabel: "Police Anglaise", langSettingLabel: "Langue", none: "Aucun" }
+            'zh-CN': { notepadHeader: "备忘录", addPlaceholder: "新建任务...", noTasks: "暂无任务!", settingsTitle: "设置", todoToggleLabel: "待办事项", anniversaryLabel: "纪念日", goalLabel: "目标倒计时", anniversaryTitle: "纪念日管理", goalTitle: "目标管理", anniversaryPlaceholder: "例如：编程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名称", dateLabel: "日期", langSettingLabel: "语言设置", none: "暂无" },
+            'zh-TW': { notepadHeader: "備忘錄", addPlaceholder: "新建任務...", noTasks: "暫無任務!", settingsTitle: "設置", todoToggleLabel: "待辦事項", anniversaryLabel: "紀念日", goalLabel: "目標倒計時", anniversaryTitle: "紀念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例如：編程生涯", goalPlaceholder: "例如：新年", addButton: "添加", nameLabel: "名稱", dateLabel: "日期", langSettingLabel: "語言設置", none: "暫無" },
+            'en': { notepadHeader: "Tasks", addPlaceholder: "Add task...", noTasks: "No tasks!", settingsTitle: "Settings", todoToggleLabel: "Todo List", anniversaryLabel: "Anniversaries", goalLabel: "Goals", anniversaryTitle: "Anniversaries", goalTitle: "Goals", anniversaryPlaceholder: "e.g., Coding Life", goalPlaceholder: "e.g., New Year", addButton: "Add", nameLabel: "Name", dateLabel: "Date", langSettingLabel: "Language", none: "None" },
+            'es': { notepadHeader: "Tareas", addPlaceholder: "Agregar tarea...", noTasks: "¡Sin tareas!", settingsTitle: "Configuración", todoToggleLabel: "Lista de tareas", anniversaryLabel: "Aniversarios", goalLabel: "Metas", anniversaryTitle: "Gestión de Aniversarios", goalTitle: "Gestión de Metas", anniversaryPlaceholder: "ej., Vida de programador", goalPlaceholder: "ej., Año Nuevo", addButton: "Agregar", nameLabel: "Nombre", dateLabel: "Fecha", langSettingLabel: "Idioma", none: "Ninguno" },
+            'pt': { notepadHeader: "Tarefas", addPlaceholder: "Adicionar tarefa...", noTasks: "Sem tarefas!", settingsTitle: "Configurações", todoToggleLabel: "Lista de tarefas", anniversaryLabel: "Aniversários", goalLabel: "Metas", anniversaryTitle: "Gerenciamento de Aniversários", goalTitle: "Gerenciamento de Metas", anniversaryPlaceholder: "ex., Vida de programador", goalPlaceholder: "ex., Ano Novo", addButton: "Adicionar", nameLabel: "Nome", dateLabel: "Data", langSettingLabel: "Idioma", none: "Nenhum" },
+            'ja': { notepadHeader: "メモ帳", addPlaceholder: "タスクを追加...", noTasks: "タスクはありません！", settingsTitle: "設定", todoToggleLabel: "やることリスト", anniversaryLabel: "記念日", goalLabel: "目標カウントダウン", anniversaryTitle: "記念日管理", goalTitle: "目標管理", anniversaryPlaceholder: "例：プログラミング人生", goalPlaceholder: "例：新年", addButton: "追加", nameLabel: "名前", dateLabel: "日付", langSettingLabel: "言語設定", none: "なし" },
+            'ko': { notepadHeader: "메모장", addPlaceholder: "작업 추가...", noTasks: "작업이 없습니다!", settingsTitle: "설정", todoToggleLabel: "할 일 목록", anniversaryLabel: "기념일", goalLabel: "목표 카운트다운", anniversaryTitle: "기념일 관리", goalTitle: "목표 관리", anniversaryPlaceholder: "예: 프로그래밍 라이프", goalPlaceholder: "예: 새해", addButton: "추가", nameLabel: "이름", dateLabel: "날짜", langSettingLabel: "언어 설정", none: "없음" },
+            'fr': { notepadHeader: "Tâches", addPlaceholder: "Ajouter une tâche...", noTasks: "Pas de tâches !", settingsTitle: "Paramètres", todoToggleLabel: "Liste de tâches", anniversaryLabel: "Anniversaires", goalLabel: "Objectifs", anniversaryTitle: "Gestion des Anniversaires", goalTitle: "Gestion des Objectifs", anniversaryPlaceholder: "ex., Vie de développeur", goalPlaceholder: "ex., Nouvel An", addButton: "Ajouter", nameLabel: "Nom", dateLabel: "Date", langSettingLabel: "Langue", none: "Aucun" }
         };
 
-        const FONTS_LANG = {
-            'zh': [
-                { value: "'Klee One', sans-serif", name: "Klee One / 楷体手写" },
-                { value: "'Zhi Mang Xing', cursive", name: "Zhi Mang Xing / 芝麻体" },
-                { value: "'Ma Shan Zheng', cursive", name: "Ma Shan Zheng / 毛笔草书" }
-            ],
-            'ja': [
-                { value: "'Klee One', sans-serif", name: "Klee One / クレー" },
-                { value: "'Yuji Syuku', serif", name: "Yuji Syuku / 游地宿" }
-            ],
-            'ko': [
-                { value: "'Nanum Pen Script', cursive", name: "Nanum Pen Script / 나눔손글씨" },
-                { value: "'Cute Font', cursive", name: "Cute Font / 큐트폰트" }
-            ],
-            'latin': [
-                { value: "'Caveat', cursive", name: "Caveat" },
-                { value: "'Architects Daughter', cursive", name: "Architects Daughter" },
-                { value: "'Patrick Hand', cursive", name: "Patrick Hand" },
-                { value: "'Indie Flower', cursive", name: "Indie Flower" }
-            ]
+        const DEFAULT_DATA = {
+            'zh-CN': { todos: [{ id: 1, text: "修复布局问题", completed: false }, { id: 2, text: "重构时钟逻辑", completed: false }, { id: 3, text: "喝水并拉伸", completed: false }], anniversaries: [{ id: 1, name: "编程生涯", date: "2020-01-01" }], goals: [{ id: 1, name: "新年", date: `${new Date().getFullYear() + 1}-01-01` }] },
+            'zh-TW': { todos: [{ id: 1, text: "修復布局問題", completed: false }, { id: 2, text: "重構時鐘邏輯", completed: false }, { id: 3, text: "喝水並拉伸", completed: false }], anniversaries: [{ id: 1, name: "編程生涯", date: "2020-01-01" }], goals: [{ id: 1, name: "新年", date: `${new Date().getFullYear() + 1}-01-01` }] },
+            'en': { todos: [{ id: 1, text: "Fix layout bugs", completed: false }, { id: 2, text: "Refactor clock logic", completed: false }, { id: 3, text: "Drink water & stretch", completed: false }], anniversaries: [{ id: 1, name: "Coding Life", date: "2020-01-01" }], goals: [{ id: 1, name: "New Year", date: `${new Date().getFullYear() + 1}-01-01` }] },
+            'es': { todos: [{ id: 1, text: "Corregir errores de diseño", completed: false }, { id: 2, text: "Refactorizar lógica del reloj", completed: false }, { id: 3, text: "Beber agua y estirarse", completed: false }], anniversaries: [{ id: 1, name: "Vida de programador", date: "2020-01-01" }], goals: [{ id: 1, name: "Año Nuevo", date: `${new Date().getFullYear() + 1}-01-01` }] },
+            'pt': { todos: [{ id: 1, text: "Corrigir erros de layout", completed: false }, { id: 2, text: "Refatorar lógica do relógio", completed: false }, { id: 3, text: "Beber água e alongar-se", completed: false }], anniversaries: [{ id: 1, name: "Vida de programador", date: "2020-01-01" }], goals: [{ id: 1, name: "Ano Novo", date: `${new Date().getFullYear() + 1}-01-01` }] },
+            'ja': { todos: [{ id: 1, text: "レイアウトのバグ修正", completed: false }, { id: 2, text: "時計ロジックのリファクタリング", completed: false }, { id: 3, text: "水分補給とストレッチ", completed: false }], anniversaries: [{ id: 1, name: "プログラミング人生", date: "2020-01-01" }], goals: [{ id: 1, name: "新年", date: `${new Date().getFullYear() + 1}-01-01` }] },
+            'ko': { todos: [{ id: 1, text: "레이아웃 버그 수정", completed: false }, { id: 2, text: "시계 로직 리팩토링", completed: false }, { id: 3, text: "물 마시기 & 스트레칭", completed: false }], anniversaries: [{ id: 1, name: "프로그래밍 라이프", date: "2020-01-01" }], goals: [{ id: 1, name: "새해", date: `${new Date().getFullYear() + 1}-01-01` }] },
+            'fr': { todos: [{ id: 1, text: "Corriger les bugs de mise en page", completed: false }, { id: 2, text: "Refactoriser la logique de l'horloge", completed: false }, { id: 3, text: "Boire de l'eau & s'étirer", completed: false }], anniversaries: [{ id: 1, name: "Vie de développeur", date: "2020-01-01" }], goals: [{ id: 1, name: "Nouvel An", date: `${new Date().getFullYear() + 1}-01-01` }] }
         };
 
         const DEFAULT_SETTINGS = { todoEnabled: true, anniversaryEnabled: true, goalEnabled: true };
-        const DEFAULT_TODOS = [{ id: 1, text: "Fix layout bugs / 修复布局问题", completed: false }, { id: 2, text: "Refactor clock logic / 重构时钟逻辑", completed: false }, { id: 3, text: "Drink water & stretch / 喝水并拉伸", completed: false }];
-        const DEFAULT_ANNIVERSARIES = [{ id: 1, name: "Coding Life", date: "2020-01-01" }];
-        const DEFAULT_GOALS = [{ id: 1, name: "New Year", date: `${new Date().getFullYear() + 1}-01-01` }];
-
         let currentLang = localStorage.getItem('ct_lang') || 'zh-CN';
         let settings = JSON.parse(localStorage.getItem('ct_settings')) || DEFAULT_SETTINGS;
-        let todos = JSON.parse(localStorage.getItem('ct_todos')) || DEFAULT_TODOS;
-        let anniversaries = JSON.parse(localStorage.getItem('ct_anniversaries')) || DEFAULT_ANNIVERSARIES;
-        let goals = JSON.parse(localStorage.getItem('ct_goals')) || DEFAULT_GOALS;
+        const activeDefaults = DEFAULT_DATA[currentLang] || DEFAULT_DATA['en'];
+        let todos = JSON.parse(localStorage.getItem('ct_todos')) || activeDefaults.todos;
+        let anniversaries = JSON.parse(localStorage.getItem('ct_anniversaries')) || activeDefaults.anniversaries;
+        let goals = JSON.parse(localStorage.getItem('ct_goals')) || activeDefaults.goals;
 
         function saveSettings() { localStorage.setItem('ct_settings', JSON.stringify(settings)); }
         function saveTodos() { localStorage.setItem('ct_todos', JSON.stringify(todos)); }
         function saveAnniversaries() { localStorage.setItem('ct_anniversaries', JSON.stringify(anniversaries)); }
         function saveGoals() { localStorage.setItem('ct_goals', JSON.stringify(goals)); }
 
-        function getDaysSince(dateStr) { const start = new Date(dateStr); start.setHours(0, 0, 0, 0); const now = new Date(); now.setHours(0, 0, 0, 0); const diffTime = now - start; return Math.floor(diffTime / (1000 * 60 * 60 * 24)); }
-        function getDaysUntil(dateStr) { const target = new Date(dateStr); target.setHours(0, 0, 0, 0); const now = new Date(); now.setHours(0, 0, 0, 0); const diffTime = target - now; return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); }
-
-        function formatKey(prefix, name) { let clean = name.trim().replace(/[^a-zA-Z0-9_\u4e00-\u9fa5]/g, ''); if (!clean) clean = 'Event'; const key = prefix + clean.charAt(0).toUpperCase() + clean.slice(1); if (/^[a-zA-Z_$][a-zA-Z0-9_\u4e00-\u9fa5]*$/.test(key)) { return `<span class="code">${key}</span>`; } else { return `<span class="string">"${key}"</span>`; } }
-
-        function toggleTodoNotepad() { const notepad = document.getElementById('todo-notepad'); notepad.classList.toggle('open'); }
-        function toggleSettingsDrawer() { const drawer = document.getElementById('settings-drawer'); drawer.classList.toggle('open'); }
+        function parseLocalDate(dateStr) { const parts = dateStr.split('-'); if (parts.length === 3) return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)); return new Date(dateStr); }
+        function getDaysSince(dateStr) { if (!dateStr) return 0; const start = parseLocalDate(dateStr); if (isNaN(start.getTime())) return 0; start.setHours(0, 0, 0, 0); const now = new Date(); now.setHours(0, 0, 0, 0); const diffTime = now - start; return Math.floor(diffTime / (1000 * 60 * 60 * 24)); }
+        function getDaysUntil(dateStr) { if (!dateStr) return 0; const target = parseLocalDate(dateStr); if (isNaN(target.getTime())) return 0; target.setHours(0, 0, 0, 0); const now = new Date(); now.setHours(0, 0, 0, 0); const diffTime = target - now; return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); }
+        function formatKey(prefix, name) { let clean = name.trim().replace(/[^a-zA-Z0-9_\u4e00-\u9fa5]/g, ''); if (!clean) clean = 'Event'; const key = prefix + clean.charAt(0).toUpperCase() + clean.slice(1); if (/^[a-zA-Z_$][a-zA-Z0-9_\u4e00-\u9fa5]*$/.test(key)) return `<span class="code">${key}</span>`; else return `<span class="string">"${key}"</span>`; }
+        function toggleTodoNotepad() { document.getElementById('todo-notepad').classList.toggle('open'); }
+        function toggleSettingsDrawer() { document.getElementById('settings-drawer').classList.toggle('open'); }
         function toggleFeature(featureKey) { settings[featureKey] = !settings[featureKey]; saveSettings(); applySettings(); updateTime(); }
-
-        function updateFontSelectors() {
-            const mainFontGroup = document.getElementById('main-font-group');
-            const mainFontSelect = document.getElementById('settings-main-font');
-            const engFontSelect = document.getElementById('settings-eng-font');
-            const isCJK = ['zh-CN', 'zh-TW', 'ja', 'ko'].includes(currentLang);
-            if (isCJK) {
-                mainFontGroup.style.display = 'block';
-                let category = 'zh';
-                if (currentLang === 'ja') category = 'ja';
-                if (currentLang === 'ko') category = 'ko';
-                mainFontSelect.innerHTML = '';
-                FONTS_LANG[category].forEach(f => { const opt = document.createElement('option'); opt.value = f.value; opt.textContent = f.name; mainFontSelect.appendChild(opt); });
-                let savedMain = localStorage.getItem('ct_font_main');
-                if (!savedMain || !FONTS_LANG[category].some(f => f.value === savedMain)) { savedMain = FONTS_LANG[category][0].value; }
-                mainFontSelect.value = savedMain;
-                document.documentElement.style.setProperty('--todo-font-main', savedMain);
-            } else {
-                mainFontGroup.style.display = 'none';
-                const savedEng = localStorage.getItem('ct_font_english') || "'Caveat', cursive";
-                document.documentElement.style.setProperty('--todo-font-main', savedEng);
-            }
-            engFontSelect.innerHTML = '';
-            FONTS_LANG['latin'].forEach(f => { const opt = document.createElement('option'); opt.value = f.value; opt.textContent = f.name; engFontSelect.appendChild(opt); });
-            let savedEng = localStorage.getItem('ct_font_english') || "'Caveat', cursive";
-            engFontSelect.value = savedEng;
-            document.documentElement.style.setProperty('--todo-font-english', savedEng);
-        }
-
-        function onMainFontChange() { const val = document.getElementById('settings-main-font').value; localStorage.setItem('ct_font_main', val); document.documentElement.style.setProperty('--todo-font-main', val); }
-        function onEngFontChange() { const val = document.getElementById('settings-eng-font').value; localStorage.setItem('ct_font_english', val); document.documentElement.style.setProperty('--todo-font-english', val); const isCJK = ['zh-CN', 'zh-TW', 'ja', 'ko'].includes(currentLang); if (!isCJK) { document.documentElement.style.setProperty('--todo-font-main', val); } }
 
         function applyTranslations() {
             const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
@@ -885,43 +821,20 @@
             document.querySelectorAll('.toggle-label')[0].textContent = t.todoToggleLabel;
             document.querySelectorAll('.toggle-label')[1].textContent = t.anniversaryLabel;
             document.querySelectorAll('.toggle-label')[2].textContent = t.goalLabel;
-            document.querySelectorAll('.drawer-divider span')[2].textContent = t.anniversaryTitle;
-            document.querySelectorAll('.drawer-divider span')[3].textContent = t.goalTitle;
+            document.querySelectorAll('.drawer-divider span')[1].textContent = t.anniversaryTitle;
+            document.querySelectorAll('.drawer-divider span')[2].textContent = t.goalTitle;
             document.getElementById('add-anniversary-name').placeholder = `${t.nameLabel} (${t.anniversaryPlaceholder})`;
             document.getElementById('add-goal-name').placeholder = `${t.nameLabel} (${t.goalPlaceholder})`;
             document.querySelectorAll('.drawer-divider .drawer-btn')[0].textContent = `${t.addButton} ${t.anniversaryLabel}`;
             document.querySelectorAll('.drawer-divider .drawer-btn')[1].textContent = `${t.addButton} ${t.goalLabel}`;
             document.getElementById('lang-select-label').textContent = t.langSettingLabel;
-            document.getElementById('main-font-label').textContent = t.mainFontLabel;
-            document.getElementById('eng-font-label').textContent = t.engFontLabel;
         }
 
-        function onLanguageChange() { currentLang = document.getElementById('settings-lang').value; localStorage.setItem('ct_lang', currentLang); applyTranslations(); updateFontSelectors(); renderTodos(); renderAnniversaries(); renderGoals(); }
+        function onLanguageChange() { currentLang = document.getElementById('settings-lang').value; localStorage.setItem('ct_lang', currentLang); applyTranslations(); renderTodos(); renderAnniversaries(); renderGoals(); updateTime(); }
+        function applySettings() { document.getElementById('settings-todo-toggle').checked = settings.todoEnabled; document.getElementById('settings-anniversary-toggle').checked = settings.anniversaryEnabled; document.getElementById('settings-goal-toggle').checked = settings.goalEnabled; document.getElementById('settings-lang').value = currentLang; applyTranslations(); }
 
-        function applySettings() {
-            const todoToggleBtn = document.getElementById('todo-toggle');
-            const todoNotepad = document.getElementById('todo-notepad');
-            if (settings.todoEnabled) {
-                todoToggleBtn.style.display = 'flex';
-            } else {
-                todoToggleBtn.style.display = 'none';
-                todoNotepad.classList.remove('open');
-            }
-
-            document.getElementById('settings-todo-toggle').checked = settings.todoEnabled;
-            document.getElementById('settings-anniversary-toggle').checked = settings.anniversaryEnabled;
-            document.getElementById('settings-goal-toggle').checked = settings.goalEnabled;
-            
-            document.getElementById('settings-lang').value = currentLang;
-            
-            applyTranslations();
-            updateFontSelectors();
-        }
-
-        // Todo items drawing & animation
         function renderTodos() {
             const listEl = document.getElementById('todo-list');
-            if (!listEl) return;
             listEl.innerHTML = '';
 
             if (todos.length === 0) {
@@ -941,23 +854,7 @@
                 listEl.appendChild(itemEl);
             });
         }
-
-        function addTodoFromInput() {
-            const input = document.getElementById('todo-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const newTodo = {
-                id: Date.now(),
-                text: text,
-                completed: false
-            };
-            todos.push(newTodo);
-            saveTodos();
-            renderTodos();
-            input.value = '';
-        }
-
+        function addTodoFromInput() { const input = document.getElementById('todo-input'); if (!input.value.trim()) return; todos.push({ id: Date.now(), text: input.value.trim(), completed: false }); saveTodos(); renderTodos(); input.value = ''; }
         function completeTodo(id) {
             const todoIndex = todos.findIndex(t => t.id === id);
             if (todoIndex === -1) return;
@@ -980,212 +877,33 @@
                 }, 400);
             }, 400);
         }
+        function renderAnniversaries() { const listEl = document.getElementById('drawer-anniversary-list'); listEl.innerHTML = ''; anniversaries.forEach(item => { const row = document.createElement('li'); row.className = 'item-row'; row.innerHTML = `<span>${item.name} (${item.date})</span><button class="delete-btn" onclick="deleteAnniversary(${item.id})">🗑️</button>`; listEl.appendChild(row); }); }
+        function addAnniversary() { const nameInput = document.getElementById('add-anniversary-name'), dateInput = document.getElementById('add-anniversary-date'); const name = nameInput.value.trim(), date = dateInput.value; if (!name || !date) return; anniversaries.push({ id: Date.now(), name, date }); saveAnniversaries(); renderAnniversaries(); updateTime(); nameInput.value = ''; dateInput.value = ''; }
+        function deleteAnniversary(id) { anniversaries = anniversaries.filter(i => i.id !== id); saveAnniversaries(); renderAnniversaries(); updateTime(); }
+        function renderGoals() { const listEl = document.getElementById('drawer-goal-list'); listEl.innerHTML = ''; goals.forEach(item => { const row = document.createElement('li'); row.className = 'item-row'; row.innerHTML = `<span>${item.name} (${item.date})</span><button class="delete-btn" onclick="deleteGoal(${item.id})">🗑️</button>`; listEl.appendChild(row); }); }
+        function addGoal() { const nameInput = document.getElementById('add-goal-name'), dateInput = document.getElementById('add-goal-date'); const name = nameInput.value.trim(), date = dateInput.value; if (!name || !date) return; goals.push({ id: Date.now(), name, date }); saveGoals(); renderGoals(); updateTime(); nameInput.value = ''; dateInput.value = ''; }
+        function deleteGoal(id) { goals = goals.filter(i => i.id !== id); saveGoals(); renderGoals(); updateTime(); }
 
-        // Anniversary list CRUD operations
-        function renderAnniversaries() {
-            const listEl = document.getElementById('drawer-anniversary-list');
-            if (!listEl) return;
-            listEl.innerHTML = '';
+        document.addEventListener('click', (e) => { const notepad = document.getElementById('todo-notepad'); if (notepad.classList.contains('open') && !notepad.contains(e.target) && !document.getElementById('todo-toggle').contains(e.target)) notepad.classList.remove('open'); const drawer = document.getElementById('settings-drawer'); if (drawer.classList.contains('open') && !drawer.contains(e.target) && !document.querySelector('.settings-btn').contains(e.target)) drawer.classList.remove('open'); });
 
-            if (anniversaries.length === 0) {
-                const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
-                listEl.innerHTML = `<li style="text-align:center; color:#718096; font-size:12px; padding: 10px 0;">${t.none}</li>`;
-                return;
-            }
-
-            anniversaries.forEach(item => {
-                const row = document.createElement('li');
-                row.className = 'item-row';
-                row.innerHTML = `
-                    <span>${item.name} (${item.date})</span>
-                    <button class="delete-btn" onclick="deleteAnniversary(${item.id})">🗑️</button>
-                `;
-                listEl.appendChild(row);
-            });
-        }
-
-        function addAnniversary() {
-            const nameInput = document.getElementById('add-anniversary-name');
-            const dateInput = document.getElementById('add-anniversary-date');
-            const name = nameInput.value.trim();
-            const date = dateInput.value;
-
-            if (!name || !date) return;
-
-            const newItem = {
-                id: Date.now(),
-                name: name,
-                date: date
-            };
-            anniversaries.push(newItem);
-            saveAnniversaries();
-            renderAnniversaries();
-            updateTime();
-
-            nameInput.value = '';
-            dateInput.value = '';
-        }
-
-        function deleteAnniversary(id) {
-            anniversaries = anniversaries.filter(item => item.id !== id);
-            saveAnniversaries();
-            renderAnniversaries();
-            updateTime();
-        }
-
-        // Goal list CRUD operations
-        function renderGoals() {
-            const listEl = document.getElementById('drawer-goal-list');
-            if (!listEl) return;
-            listEl.innerHTML = '';
-
-            if (goals.length === 0) {
-                const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
-                listEl.innerHTML = `<li style="text-align:center; color:#718096; font-size:12px; padding: 10px 0;">${t.none}</li>`;
-                return;
-            }
-
-            goals.forEach(item => {
-                const row = document.createElement('li');
-                row.className = 'item-row';
-                row.innerHTML = `
-                    <span>${item.name} (${item.date})</span>
-                    <button class="delete-btn" onclick="deleteGoal(${item.id})">🗑️</button>
-                `;
-                listEl.appendChild(row);
-            });
-        }
-
-        function addGoal() {
-            const nameInput = document.getElementById('add-goal-name');
-            const dateInput = document.getElementById('add-goal-date');
-            const name = nameInput.value.trim();
-            const date = dateInput.value;
-
-            if (!name || !date) return;
-
-            const newItem = {
-                id: Date.now(),
-                name: name,
-                date: date
-            };
-            goals.push(newItem);
-            saveGoals();
-            renderGoals();
-            updateTime();
-
-            nameInput.value = '';
-            dateInput.value = '';
-        }
-
-        function deleteGoal(id) {
-            goals = goals.filter(item => item.id !== id);
-            saveGoals();
-            renderGoals();
-            updateTime();
-        }
-
-        // Closing drawer/notepad when clicking outside
-        document.addEventListener('click', (e) => {
-            const notepad = document.getElementById('todo-notepad');
-            const toggleBtn = document.getElementById('todo-toggle');
-            if (notepad && notepad.classList.contains('open') && !notepad.contains(e.target) && !toggleBtn.contains(e.target)) {
-                notepad.classList.remove('open');
-            }
-
-            const drawer = document.getElementById('settings-drawer');
-            const settingsBtn = document.querySelector('.settings-btn');
-            if (drawer && drawer.classList.contains('open') && !drawer.contains(e.target) && !settingsBtn.contains(e.target)) {
-                drawer.classList.remove('open');
-            }
-        });
-
-        // Time calculations and Javascript Object formatting
         function updateTime() {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0'), minutes = String(now.getMinutes()).padStart(2, '0'), seconds = String(now.getSeconds()).padStart(2, '0');
+            const year = now.getFullYear(), month = String(now.getMonth() + 1).padStart(2, '0'), day = String(now.getDate()).padStart(2, '0');
             const dayOfWeek = now.toLocaleString('en', { weekday: 'long' });
-
-            const startOfDay = new Date(now);
-            startOfDay.setHours(0, 0, 0, 0);
-            const progress = ((now - startOfDay) / 86400000) * 100;
-
-            const isDarkTheme = document.body.classList.contains('animated-background-dark');
-            const numberColor = isDarkTheme ? '#dcdcaa' : '#1e3a8a';
-
-            let extraProperties = '';
-            if (settings.anniversaryEnabled && anniversaries.length > 0) {
-                anniversaries.forEach(item => {
-                    const days = getDaysSince(item.date);
-                    const keyHtml = formatKey('daysSince', item.name);
-                    extraProperties += `,\n    ${keyHtml}: <span class="number" style="color: ${numberColor}">${days}</span>`;
-                });
-            }
-            if (settings.goalEnabled && goals.length > 0) {
-                goals.forEach(item => {
-                    const days = getDaysUntil(item.date);
-                    const keyHtml = formatKey('daysUntil', item.name);
-                    extraProperties += `,\n    ${keyHtml}: <span class="number" style="color: ${numberColor}">${days}</span>`;
-                });
-            }
-
-            const codeString = `
-<span class="code">const</span> currentTime = {
-    <span class="code">year</span>: <span class="number" style="color: ${numberColor}">${year}</span>,
-    <span class="code">month</span>: <span class="number" style="color: ${numberColor}">${month}</span>,
-    <span class="code">day</span>: <span class="number" style="color: ${numberColor}">${day}</span>,
-    <span class="code">dayOfWeek</span>: <span class="string">"${dayOfWeek}"</span>,
-    <span class="code">hour</span>: <span class="number" style="color: ${numberColor}">${hours}</span>,
-    <span class="code">minute</span>: <span class="number" style="color: ${numberColor}">${minutes}</span>,
-    <span class="code">second</span>: <span class="number" style="color: ${numberColor}">${seconds}</span>,
-    <span class="code">dayProgress</span>: <span class="number" style="color: ${numberColor}">${progress.toFixed(2)}%</span>${extraProperties}
-};
-            `;
-
-            document.getElementById('code').innerHTML = codeString;
-
-            const hourHand = document.querySelector('.hour-hand');
-            const minuteHand = document.querySelector('.minute-hand');
-            const secondHand = document.querySelector('.second-hand');
-
-            const hourDeg = (now.getHours() % 12) * 30 + (now.getMinutes() * 0.5);
-            const minuteDeg = now.getMinutes() * 6 + (now.getSeconds() * 0.1);
-            const secondDeg = now.getSeconds() * 6;
-
-            hourHand.style.transform = `rotate(${hourDeg}deg)`;
-            minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
-            secondHand.style.transform = `rotate(${secondDeg}deg)`;
+            const progress = (((now - new Date().setHours(0,0,0,0)) / 86400000) * 100).toFixed(2);
+            let extra = '';
+            if (settings.anniversaryEnabled) anniversaries.forEach(i => extra += `,\n    ${formatKey('daysSince', i.name)}: <span class="number">${getDaysSince(i.date)}</span>`);
+            if (settings.goalEnabled) goals.forEach(i => extra += `,\n    ${formatKey('daysUntil', i.name)}: <span class="number">${getDaysUntil(i.date)}</span>`);
+            document.getElementById('code').innerHTML = `<span class="code">const</span> currentTime = {\n    <span class="code">year</span>: <span class="number">${year}</span>,\n    <span class="code">month</span>: <span class="number">${month}</span>,\n    <span class="code">day</span>: <span class="number">${day}</span>,\n    <span class="code">dayOfWeek</span>: <span class="string">"${dayOfWeek}"</span>,\n    <span class="code">hour</span>: <span class="number">${hours}</span>,\n    <span class="code">minute</span>: <span class="number">${minutes}</span>,\n    <span class="code">second</span>: <span class="number">${seconds}</span>,\n    <span class="code">dayProgress</span>: <span class="number">${progress}%</span>${extra}\n};`;
+            const h = (now.getHours() % 12) * 30 + (now.getMinutes() * 0.5), m = now.getMinutes() * 6, s = now.getSeconds() * 6;
+            document.querySelector('.hour-hand').style.transform = `rotate(${h}deg)`;
+            document.querySelector('.minute-hand').style.transform = `rotate(${m}deg)`;
+            document.querySelector('.second-hand').style.transform = `rotate(${s}deg)`;
         }
 
-        function toggleTheme() {
-            const body = document.body;
-            const isDark = body.classList.contains('animated-background-dark');
-
-            if (isDark) {
-                body.classList.remove('animated-background-dark');
-                body.classList.add('animated-background-light');
-                body.style.color = '#1e1e1e';
-            } else {
-                body.classList.remove('animated-background-light');
-                body.classList.add('animated-background-dark');
-                body.style.color = '#d4d4d4';
-            }
-
-            updateTime();
-        }
-
-        // Initialize script logic
-        applySettings();
-        renderTodos();
-        renderAnniversaries();
-        renderGoals();
-        setInterval(updateTime, 1000);
-        updateTime();
+        function toggleTheme() { document.body.classList.toggle('animated-background-dark'); document.body.classList.toggle('animated-background-light'); updateTime(); }
+        applySettings(); renderTodos(); renderAnniversaries(); renderGoals(); setInterval(updateTime, 1000); updateTime();
     </script>
 </body>
 </html>

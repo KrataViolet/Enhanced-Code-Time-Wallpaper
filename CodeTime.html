@@ -43,9 +43,23 @@
             gap: var(--gap);
         }
 
-        .code { color: #569cd6; }
-        .number { color: #dcdcaa; }
-        .string { color: #ce9178; }
+        .code { color: #569cd6; transition: color 0.5s; }
+        .number { color: #dcdcaa; transition: color 0.5s; }
+        .string { color: #ce9178; transition: color 0.5s; }
+
+        .animated-background-light { color: #1e1e1e; }
+        .animated-background-light .code { color: #0550ae; }
+        .animated-background-light .number { color: #7a5c12; }
+        .animated-background-light .string { color: #953800; }
+
+        .animated-background-light .analog-clock {
+            box-shadow: 0 0 20px rgba(5, 80, 174, 0.5);
+            border-color: #1e1e1e;
+        }
+
+        .animated-background-light .second-hand {
+            background: #953800;
+        }
 
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
@@ -861,7 +875,46 @@
             padding: 20px 0;
         }
 
+        /* Upload area compact mode when photos exist */
+        .album-upload-area.compact {
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .album-upload-area.compact .album-upload-icon {
+            font-size: 16px;
+            display: inline;
+            margin-bottom: 0;
+        }
+
+        .album-upload-area.compact #album-upload-text {
+            font-size: 12px;
+        }
+
         /* Lightbox Overlay */
+        @keyframes lightboxFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes lightboxZoomIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes lightboxFadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes lightboxZoomOut {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(0.7); opacity: 0; }
+        }
+
         #album-lightbox {
             position: fixed;
             top: 0;
@@ -878,14 +931,29 @@
 
         #album-lightbox.open {
             display: flex;
+            animation: lightboxFadeIn 0.3s ease forwards;
+        }
+
+        #album-lightbox.closing {
+            display: flex;
+            animation: lightboxFadeOut 0.25s ease forwards;
         }
 
         #album-lightbox img {
-            max-width: 90vw;
-            max-height: 90vh;
-            border-radius: 8px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            max-width: 85vw;
+            max-height: 85vh;
+            border-radius: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
             object-fit: contain;
+        }
+
+        #album-lightbox.open img {
+            animation: lightboxZoomIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+        }
+
+        #album-lightbox.closing img {
+            animation: lightboxZoomOut 0.25s ease forwards;
         }
     </style>
 </head>
@@ -1211,23 +1279,33 @@
         }
 
         function openLightbox(src) {
+            const lb = document.getElementById('album-lightbox');
+            lb.classList.remove('closing');
             document.getElementById('lightbox-img').src = src;
-            document.getElementById('album-lightbox').classList.add('open');
+            lb.classList.add('open');
         }
 
         function closeLightbox() {
-            document.getElementById('album-lightbox').classList.remove('open');
-            document.getElementById('lightbox-img').src = '';
+            const lb = document.getElementById('album-lightbox');
+            lb.classList.remove('open');
+            lb.classList.add('closing');
+            setTimeout(() => {
+                lb.classList.remove('closing');
+                document.getElementById('lightbox-img').src = '';
+            }, 250);
         }
 
         function renderAlbum() {
             const grid = document.getElementById('album-grid');
+            const uploadArea = document.querySelector('.album-upload-area');
             grid.innerHTML = '';
             if (albumPhotos.length === 0) {
                 const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
                 grid.innerHTML = `<div class="album-empty" style="grid-column: 1/-1;">${t.albumEmpty}</div>`;
+                uploadArea.classList.remove('compact');
                 return;
             }
+            uploadArea.classList.add('compact');
             albumPhotos.forEach(photo => {
                 const thumb = document.createElement('div');
                 thumb.className = 'album-thumb';
